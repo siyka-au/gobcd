@@ -2,24 +2,19 @@ package bcd
 
 // Encode Encode uint64 to a BCD byte array
 func Encode(x uint64) []byte {
-	if x == 0 {
-		return []byte{0x0f}
+	if x < 10 {
+		return []byte{byte(x)}
 	}
 	var n int
 	for xx := x; xx > 0; n++ {
 		xx = xx / 10
 	}
 	bcd := make([]byte, (n+1)/2)
-	if n%2 == 1 {
-		hi, lo := byte(x%10), byte(0x0f)
-		bcd[(n-1)/2] = hi<<4 | lo
+
+	for i := 0; x > 0; i++ {
+		xx := x % 10
 		x = x / 10
-		n--
-	}
-	for i := n/2 - 1; i >= 0; i-- {
-		hi, lo := byte((x/10)%10), byte(x%10)
-		bcd[i] = hi<<4 | lo
-		x = x / 100
+		bcd[i/2] = bcd[i/2] | byte(xx)<<(i%2*4)
 	}
 	return bcd
 }
