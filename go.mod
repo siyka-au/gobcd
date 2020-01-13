@@ -1,4 +1,4 @@
-module siyka.com/gobcd
+module github.com/siyka-au/gobcd
 
 go 1.13
 
